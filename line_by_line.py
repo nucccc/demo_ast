@@ -1,19 +1,46 @@
 code = '''
-def fibonacci(i: int) -> int:
-    if i == 0 or i == 1:
-        return 1
+def f():
+    if True:
+        for i in range(5):
+            print(i)
+        else:
+            print('printed all the numbers')
+        
+        try:
+            num = int('fourtytwo')
+        except ValueError:
+            print('naaaaa')
+        else:
+            print('unexpectedly')
+        finally:
+            print('anyways it\\'s an overrated movie')
+    elif 5 < 4:
+        print('never')
     else:
-        return fibonacci(i-1) + fibonacci(i-2)
-
-if __name__ == '__main__':
-    for i in range(10):
-        print(fibonacci(i))
+        print('never going to happen')
 '''
 
 import ast
-import time
 from copy import copy
+from typing import Iterator
 from termcolor import colored
+
+attrs_to_iter = [
+    'body', 'handlers', 'orelse', 'finalbody'
+]
+
+def iter_bodies(node: ast.AST) -> Iterator[ast.AST]:
+    yield node
+    for attr in attrs_to_iter:
+        if hasattr(node, attr):
+            for subnode in getattr(node, attr):
+                for elem in iter_bodies(subnode):
+                    yield elem
+
+def iter_stmts(node: ast.AST) -> list[ast.stmt]:
+    stmts: list[ast.stmt] = [subnode for subnode in ast.walk(node) if isinstance(subnode, ast.stmt)]
+    stmts.sort(key = lambda n: n.lineno)
+    return stmts
 
 color = 'cyan'
 
@@ -42,7 +69,7 @@ tree = ast.parse(code)
 
 codelines = [''] + code.split('\n')
 
-nodes = [node for node in ast.walk(tree) if hasattr(node, 'lineno')]
+nodes = [node for node in iter_stmts(tree) if hasattr(node, 'lineno')]
         
 boh = None
 
