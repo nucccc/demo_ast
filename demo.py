@@ -61,25 +61,29 @@ class MC(ast.NodeVisitor):
     def visit_Import(self, node):
 
         if node.lineno > 100:
-            pass #print(f'{ast.get_source_segment(self.code, node)}\t\t\t {self.path}:{node.lineno}')
+            if False:
+                print(f'{ast.get_source_segment(self.code, node)}\t\t\t {self.path}:{node.lineno}')
 
         self.generic_visit(node)
 
     def visit_ImportFrom(self, node):
 
         if node.lineno > 100:
-            pass #print(f'{ast.get_source_segment(self.code, node)}\t\t\t {self.path}:{node.lineno}')
+            if False:
+                print(f'{ast.get_source_segment(self.code, node)}\t\t\t {self.path}:{node.lineno}')
 
         self.generic_visit(node)
 
     def visit_ClassDef(self, node: ast.ClassDef):
         for subnode in node.body:
             if isinstance(subnode, ast.FunctionDef) and subnode.name == '__call__':
-                pass# print(f'In {self.path}:{node.lineno} class {node.name} is defined as a callable')
+                if False:
+                    print(f'In {self.path}:{node.lineno} class {node.name} is defined as a callable')
         
         # checking if there are dataclasses
         if 'dataclass' in {decorator.id for decorator in node.decorator_list if hasattr(decorator, 'id')}:
-            print(f'In {self.path}:{node.lineno} class {node.name} is a dataclass')
+            if True:
+                print(f'In {self.path}:{node.lineno} class {node.name} is a dataclass')
 
 mc = MC()
 
