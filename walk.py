@@ -15,7 +15,7 @@ import time
 from copy import copy
 from termcolor import colored
 
-color = 'cyan'
+color = 'red'
 
 def get_node_code(node: ast.AST, codelines: list[str]) -> str:
     if node.lineno == node.end_lineno:

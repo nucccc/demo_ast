@@ -98,6 +98,9 @@ df.write_csv('funcs.csv')
 lcdf = pl.DataFrame(mc.list_comp_data)
 
 plt.plot(df['n_lines'], df['n_chars'], 'o')
+plt.xlabel('Number of codelines')
+plt.ylabel('Number of character')
+plt.title('Codelines vs characters scatterplot')
 plt.show()
 
 sns.histplot(df['n_lines'])
